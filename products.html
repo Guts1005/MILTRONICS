@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - MILTRONICS</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        body { background-color: black; color: white; }
+        .category__container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 20px; }
+        .category__card { background: #1e1e1e; padding: 20px; border-radius: 10px; width: 250px; text-align: center; cursor: pointer; }
+        .category__card:hover { background: #333; }
+        .products__container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+        .product__card { background: #1e1e1e; padding: 20px; border-radius: 10px; width: 250px; text-align: center; }
+        .product__card img { width: 100%; border-radius: 10px; }
+        .product__card h2, .product__card p, .product__card span { color: white; }
+        .filter-container { text-align: center; margin-bottom: 20px; }
+        .filter-container select { padding: 5px; }
+    </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar__container">
+      <a href="index.html" id="navbar__logo">MILTRONICS</a>
+      <ul class="navbar__menu">
+        <li class="navbar__item"><a href="index.html" class="navbar__links">Home</a></li>
+        <li class="navbar__item"><a href="products.html" class="navbar__links">Products</a></li>
+        <li class="navbar__item"><a href="cart.html" class="navbar__links">Cart</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="products">
+    <h1>Our Product Categories</h1>
+    <div class="category__container">
+      <div class="category__card" onclick="showProducts('network-camera')">
+        <h2>Network Cameras</h2>
+      </div>
+      <div class="category__card" onclick="showProducts('nvr')">
+        <h2>Network Video Recorders</h2>
+      </div>
+      <div class="category__card" onclick="showProducts('analog-hd-camera')">
+        <h2>Analog HD Cameras</h2>
+      </div>
+      <div class="category__card" onclick="showProducts('dvr')">
+        <h2>Digital Video Recorders</h2>
+      </div>
+      <div class="category__card" onclick="showProducts('accessories')">
+        <h2>Accessories</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-container">
+    <label for="sort">Sort by:</label>
+    <select id="sort" onchange="sortProducts()">
+      <option value="price">Price</option>
+      <option value="rating">Rating</option>
+      <option value="stock">Stock Availability</option>
+    </select>
+  </div>
+
+  <div class="products__container" id="productsContainer" style="display: none;"></div>
+
+  <script>
+   const products = {
+  'network-camera': [
+    {
+      name: 'CP-UNC-TA21L5C-MSG-V2',
+      desc: '3MP Network IR Bullet Camera with advanced features.',
+      price: 150,
+      stock: 10,
+      rating: 4.5,
+      img: 'https://www.cpplusworld.com/prodassets/product/small/db48dc95-ec2a-402b-acb8-787412b907a0.png'
+    },
+    {
+      name: 'CP-UNC-TD41L5C-V2',
+      desc: '4MP WDR Network Dome Camera with smart IR.',
+      price: 180,
+      stock: 8,
+      rating: 4.7,
+      img: 'https://www.cpplusworld.com/uploads/product/CP-UNC-TD41L5C-V2.jpg'
+    },
+    {
+      name: 'CP-UNC-TB60ZL5-V2',
+      desc: '6MP Starlight Network Bullet Camera for clear surveillance.',
+      price: 250,
+      stock: 5,
+      rating: 4.8,
+      img: 'https://www.cpplusworld.com/uploads/product/CP-UNC-TB60ZL5-V2.jpg'
+    }
+    // Add 7 more products
+  ],
+  
+  'nvr': [
+    {
+      name: 'CP-UNR-4K432R8-V2',
+      desc: '32-channel 4K NVR with AI capabilities.',
+      price: 400,
+      stock: 12,
+      rating: 4.6,
+      img: 'https://www.cpplusworld.com/uploads/product/CP-UNR-4K432R8-V2.jpg'
+    }
+    // Add 9 more NVRs
+  ],
+
+  'analog-camera': [
+    {
+      name: 'CP-UNC-TC21L2-S',
+      desc: '2MP Analog HD Bullet Camera with IR.',
+      price: 80,
+      stock: 15,
+      rating: 4.4,
+      img: 'https://www.cpplusworld.com/uploads/product/CP-UNC-TC21L2-S.jpg'
+    }
+    // Add 9 more Analog Cameras
+  ],
+
+  'dvr': [
+    {
+      name: 'CP-UVR-0801E1-HC',
+      desc: '8-channel DVR with full HD support.',
+      price: 200,
+      stock: 7,
+      rating: 4.5,
+      img: 'https://www.cpplusworld.com/uploads/product/CP-UVR-0801E1-HC.jpg'
+    }
+    // Add 9 more DVRs
+  ],
+
+  'accessories': [
+    {
+      name: 'CP-UPS-2KVA',
+      desc: '2KVA UPS for uninterrupted power supply.',
+      price: 150,
+      stock: 20,
+      rating: 4.3,
+      img: 'https://www.cpplusworld.com/uploads/product/CP-UPS-2KVA.jpg'
+    }
+    // Add 9 more Accessories
+  ]
+};
+
+
+
+
+function showProducts(category) {
+  const productsContainer = document.getElementById("productsContainer");
+  productsContainer.style.display = "flex";
+  productsContainer.innerHTML = products[category].map(product => `
+    <div class="product__card">
+      <img src="${product.img}" alt="${product.name}">
+      <h2>${product.name}</h2>
+      <p>${product.desc}</p>
+      <span class="price">₹${product.price}</span>
+      <p class="rating">Rating: ${product.rating} ★</p>
+      <p class="stock">Stock: ${product.stock}</p>
+      <button class="wishlist">Add to Cart 🛒</button>
+    </div>`).join('');
+}
+
+
+  </script>
+</body>
+</html>
